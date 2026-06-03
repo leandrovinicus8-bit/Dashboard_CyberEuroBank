@@ -1,0 +1,1650 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EUROBANK · INTELLIGENCE MATRIX 2077 · LEANXANDRIA CORP</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;900&family=Share+Tech+Mono&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ══════════════════════════════════
+   DESIGN TOKENS
+══════════════════════════════════ */
+:root {
+  /* Backgrounds – dark gunmetal */
+  --bg:         #13161c;
+  --bg2:        #181c24;
+  --panel:      #1d222c;
+  --panel2:     #222834;
+  --panel3:     #262d3a;
+
+  /* Borders */
+  --b0:         #2a3040;
+  --b1:         #3a4258;
+  --b2:         #4e5a70;
+
+  /* Silver palette – main brand */
+  --sv0:        #f0f2f5;   /* near-white silver */
+  --sv1:        #c8d0dc;   /* light silver */
+  --sv2:        #9aa8bc;   /* mid silver */
+  --sv3:        #6a7888;   /* dark silver */
+  --sv4:        #3e4858;   /* deep gunmetal */
+
+  /* Accent – cool blue-cyan (futuristic, not neon) */
+  --ac:         #5bc8e8;   /* primary accent */
+  --ac2:        #3aaac8;
+  --ac3:        #1a7890;
+
+  /* Status colours */
+  --green:      #44c87a;
+  --red:        #d84040;
+  --amber:      #d89030;
+  --purple:     #9870d0;
+
+  /* Text */
+  --tx:         #c8d4e4;
+  --tx2:        #7a8ea8;
+  --tx3:        #48586a;
+
+  /* Shadows & glow */
+  --shadow:     0 4px 28px rgba(0,0,0,.55);
+  --glow-sv:    0 0 18px rgba(200,208,220,.15);
+  --glow-ac:    0 0 18px rgba(91,200,232,.2);
+}
+
+/* ══ RESET ══ */
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  font-family: 'Share Tech Mono', monospace;
+  color: var(--tx);
+  min-height: 100vh;
+  overflow-x: hidden;
+  cursor: default;
+}
+
+/* ── scanlines (very subtle) ── */
+body::before {
+  content:''; position:fixed; inset:0; pointer-events:none; z-index:9999;
+  background: repeating-linear-gradient(
+    0deg, transparent 0px, transparent 3px,
+    rgba(0,0,0,.04) 3px, rgba(0,0,0,.04) 4px);
+}
+
+/* ── fine grid ── */
+body::after {
+  content:''; position:fixed; inset:0; pointer-events:none; z-index:0;
+  background-image:
+    linear-gradient(rgba(91,200,232,.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(91,200,232,.025) 1px, transparent 1px);
+  background-size: 48px 48px;
+}
+
+/* ══════════════════════════════════
+   ACCESS BANNER
+══════════════════════════════════ */
+.access-banner {
+  position: relative; z-index: 200;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 5px 28px;
+  background: rgba(91,200,232,.05);
+  border-bottom: 1px solid var(--b0);
+}
+.access-banner-left {
+  display: flex; align-items: center; gap: 10px;
+  font-family: 'Orbitron', monospace; font-size: 8px; letter-spacing: 3px;
+  color: var(--tx3);
+}
+.access-banner-left svg { flex-shrink: 0; color: var(--ac); }
+.access-banner-right {
+  font-size: 8px; letter-spacing: 2px; color: var(--tx3);
+}
+
+/* ══════════════════════════════════
+   HEADER
+══════════════════════════════════ */
+.header {
+  position: relative; z-index: 100;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 28px;
+  height: 72px;
+  background: linear-gradient(180deg, #0e1118 0%, var(--bg2) 100%);
+  border-bottom: 1px solid var(--b1);
+  box-shadow: var(--shadow);
+}
+
+/* silver line top of header */
+.header::before {
+  content:''; position:absolute; top:0; left:0; right:0; height:2px;
+  background: linear-gradient(90deg,
+    transparent 0%,
+    var(--sv3) 15%,
+    var(--sv1) 40%,
+    var(--sv0) 50%,
+    var(--sv1) 60%,
+    var(--sv3) 85%,
+    transparent 100%);
+}
+
+.header-left { display:flex; align-items:center; gap:18px; }
+
+/* ── COIN SVG ── */
+.coin-svg {
+  width: 56px; height: 56px; flex-shrink: 0;
+  filter:
+    drop-shadow(0 0 6px rgba(180,190,210,.45))
+    drop-shadow(0 2px 10px rgba(0,0,0,.8));
+  animation: coinShimmer 12s ease-in-out infinite;
+}
+@keyframes coinShimmer {
+  0%,100% { filter: drop-shadow(0 0 5px rgba(160,175,200,.4)) drop-shadow(0 2px 8px rgba(0,0,0,.8)) brightness(1); }
+  30%      { filter: drop-shadow(3px 0 10px rgba(200,215,235,.65)) drop-shadow(0 2px 8px rgba(0,0,0,.8)) brightness(1.12); }
+  60%      { filter: drop-shadow(-3px 0 10px rgba(200,215,235,.55)) drop-shadow(0 2px 8px rgba(0,0,0,.8)) brightness(1.08); }
+}
+
+.header-divider {
+  width: 1px; height: 44px;
+  background: linear-gradient(180deg, transparent, var(--b2), transparent);
+}
+
+.header-titles { display:flex; flex-direction:column; gap:4px; }
+.header-brand {
+  font-family: 'Orbitron', monospace; font-size: 18px; font-weight: 900;
+  letter-spacing: 5px; color: var(--sv1);
+  text-shadow: 0 0 20px rgba(200,208,220,.3), 0 0 40px rgba(200,208,220,.1);
+  line-height: 1;
+}
+.header-sub {
+  font-family: 'Orbitron', monospace; font-size: 8px; letter-spacing: 4px;
+  color: var(--ac); opacity: .75; line-height: 1;
+}
+
+.header-right { display:flex; align-items:center; gap:18px; }
+
+.live-pill {
+  display:flex; align-items:center; gap:6px;
+  font-family:'Orbitron',monospace; font-size:8px; letter-spacing:2px;
+  color: var(--green);
+}
+.live-dot {
+  width:6px; height:6px; border-radius:50%;
+  background: var(--green); box-shadow: 0 0 7px var(--green);
+  animation: lp 1.6s ease-in-out infinite;
+}
+@keyframes lp { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.25;transform:scale(.5)} }
+
+.hdr-clock {
+  font-family:'Orbitron',monospace; font-size:11px; letter-spacing:1.5px;
+  color: var(--sv2); line-height:1;
+  display:flex; flex-direction:column; align-items:flex-end; gap:2px;
+}
+.hdr-clock-year { font-size:8px; color:var(--ac); letter-spacing:3px; }
+
+.conf-badge {
+  font-family:'Orbitron',monospace; font-size:7px; letter-spacing:3px;
+  color: var(--red); border: 1px solid rgba(216,64,64,.5);
+  padding: 4px 10px; border-radius:2px;
+  background: rgba(216,64,64,.08);
+  box-shadow: 0 0 8px rgba(216,64,64,.15);
+  animation: confBlink 6s ease-in-out infinite;
+  white-space: nowrap;
+}
+@keyframes confBlink { 0%,87%,100%{opacity:1} 89%{opacity:.15} 91%{opacity:1} 94%{opacity:.5} 96%{opacity:1} }
+
+/* ── MAKER BADGE ── */
+.maker-badge {
+  font-family:'Orbitron',monospace; font-size:7px; letter-spacing:2px;
+  color: var(--sv3); border-left: 2px solid var(--b1);
+  padding-left: 10px; line-height:1.6;
+}
+.maker-badge span { color: var(--sv1); }
+
+/* ══════════════════════════════════
+   TICKER
+══════════════════════════════════ */
+.ticker {
+  position: relative; z-index: 99;
+  background: rgba(10,12,18,.95);
+  border-bottom: 1px solid var(--b0);
+  overflow: hidden; white-space: nowrap; padding: 6px 0;
+}
+.ticker-track {
+  display:inline-flex; gap:0;
+  animation: tick 75s linear infinite;
+}
+.ticker-track:hover { animation-play-state: paused; }
+.ticker-seg {
+  display:inline-flex; align-items:center; gap:12px;
+  padding: 0 28px; font-size:9px; letter-spacing:1.5px; color: var(--tx3);
+}
+.ticker-seg .ty  { color: var(--sv1); }
+.ticker-seg .tg  { color: var(--green); }
+.ticker-seg .tr  { color: var(--red); }
+.ticker-seg .tc  { color: var(--ac); }
+.ticker-sep { color: var(--b2); font-size:12px; }
+@keyframes tick { 0%{transform:translateX(0)} 100%{transform:translateX(-50%)} }
+
+/* ══════════════════════════════════
+   NAV
+══════════════════════════════════ */
+.nav {
+  position: sticky; top:0; z-index:90;
+  display:flex; align-items:center; padding:0 28px;
+  background: rgba(14,17,24,.97);
+  border-bottom: 1px solid var(--b0);
+  backdrop-filter: blur(8px);
+  gap: 2px;
+}
+.nav-tab {
+  position: relative;
+  font-family:'Orbitron',monospace; font-size:8.5px; letter-spacing:2px;
+  padding: 14px 18px; color: var(--tx3); cursor:pointer;
+  border-bottom: 2px solid transparent;
+  transition: color .2s, border-color .2s;
+  user-select:none; white-space:nowrap;
+}
+.nav-tab:hover { color: var(--sv2); }
+.nav-tab.active {
+  color: var(--sv0);
+  border-bottom-color: var(--sv1);
+  text-shadow: 0 0 12px rgba(200,208,220,.4);
+}
+.nav-badge {
+  position:absolute; top:10px; right:8px;
+  width:5px; height:5px; border-radius:50%;
+  background: var(--red); box-shadow:0 0 5px var(--red);
+}
+.nav-spacer { flex:1; }
+.nav-info {
+  font-size:8px; letter-spacing:2px; color:var(--tx3);
+  display:flex; align-items:center; gap:8px;
+}
+.nav-info-dot { width:4px;height:4px;border-radius:50%;background:var(--ac); }
+
+/* ══════════════════════════════════
+   LAYOUT
+══════════════════════════════════ */
+.main { position:relative; z-index:1; padding:20px 28px; display:flex; flex-direction:column; gap:16px; }
+.page { display:none; flex-direction:column; gap:16px; }
+.page.active { display:flex; }
+
+.g2  { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+.g3  { display:grid; grid-template-columns:1fr 1fr 1fr; gap:16px; }
+.g65 { display:grid; grid-template-columns:62fr 38fr; gap:16px; }
+.g40 { display:grid; grid-template-columns:42fr 58fr; gap:16px; }
+.g55 { display:grid; grid-template-columns:55fr 45fr; gap:16px; }
+
+/* ══════════════════════════════════
+   PANEL
+══════════════════════════════════ */
+.panel {
+  position:relative; overflow:hidden;
+  background: var(--panel);
+  border: 1px solid var(--b0);
+  border-radius: 3px;
+  box-shadow: var(--shadow);
+  animation: fu .45s ease both;
+}
+@keyframes fu { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
+
+/* top accent line */
+.panel::before {
+  content:''; position:absolute; top:0; left:0; right:0; height:1px;
+  background: linear-gradient(90deg,
+    transparent 0%, var(--b2) 20%, var(--sv3) 50%, var(--b2) 80%, transparent 100%);
+}
+
+/* corner deco */
+.panel::after {
+  content:''; position:absolute; top:0; right:0;
+  width:18px; height:18px;
+  border-top:1px solid var(--b2); border-right:1px solid var(--b2);
+  opacity:.6; pointer-events:none;
+}
+
+/* panel header */
+.ph {
+  display:flex; align-items:center; justify-content:space-between;
+  padding:10px 16px;
+  background:rgba(0,0,0,.2);
+  border-bottom:1px solid var(--b0);
+}
+.ph-title {
+  display:flex; align-items:center; gap:8px;
+  font-family:'Orbitron',monospace; font-size:8.5px; letter-spacing:2.5px;
+  color: var(--sv2);
+}
+.ph-icon {
+  width:13px; height:13px;
+  border:1px solid var(--b2);
+  display:flex; align-items:center; justify-content:center;
+  font-size:7px; color:var(--ac); flex-shrink:0;
+}
+.ph-tag {
+  font-size:7px; letter-spacing:1px; color:var(--tx3);
+  border:1px solid var(--b0); padding:2px 7px; border-radius:2px;
+}
+.pb { padding:16px; }
+
+/* ══════════════════════════════════
+   KPI ROW
+══════════════════════════════════ */
+.kpi-row { display:grid; grid-template-columns:repeat(5,1fr); gap:14px; }
+
+.kpi {
+  background:var(--panel);
+  border:1px solid var(--b0); border-radius:3px;
+  padding:15px; position:relative; overflow:hidden;
+  cursor:default; box-shadow:var(--shadow);
+  transition:transform .2s, border-color .25s, box-shadow .25s;
+  animation:fu .45s ease both;
+}
+.kpi:hover {
+  transform:translateY(-3px);
+  border-color:var(--kc,var(--ac));
+  box-shadow:var(--shadow), 0 0 18px color-mix(in srgb,var(--kc,var(--ac)) 22%,transparent);
+}
+.kpi::before {
+  content:''; position:absolute; top:0; left:0; right:0; height:2px;
+  background:linear-gradient(90deg, transparent, var(--kc,var(--ac)), transparent);
+}
+.kpi-lbl {
+  font-family:'Orbitron',monospace; font-size:7.5px; letter-spacing:2px;
+  color:var(--tx3); margin-bottom:8px;
+}
+.kpi-val {
+  font-family:'Orbitron',monospace; font-size:24px; font-weight:700; line-height:1;
+  color:var(--kc,var(--sv1)); margin-bottom:5px;
+  text-shadow: 0 0 12px color-mix(in srgb,var(--kc,var(--sv1)) 40%,transparent);
+}
+.kpi-sub { font-size:9.5px; color:var(--tx2); display:flex; align-items:center; gap:5px; }
+.up  { color:var(--green); }
+.dn  { color:var(--red); }
+
+/* spark */
+.kpi-spark { position:absolute; bottom:0; left:0; right:0; height:30px; opacity:.4; pointer-events:none; }
+
+/* ══════════════════════════════════
+   GAUGES
+══════════════════════════════════ */
+.gstack { display:flex; flex-direction:column; gap:11px; }
+.gi { display:flex; flex-direction:column; gap:4px; }
+.gm { display:flex; justify-content:space-between; font-size:9px; }
+.gl { color:var(--tx2); }
+.gv { font-family:'Orbitron',monospace; font-size:9px; }
+.gt {
+  height:7px; background:rgba(255,255,255,.04);
+  border:1px solid var(--b0); border-radius:1px; overflow:hidden;
+}
+.gf {
+  height:100%; border-radius:1px;
+  transition:width 1.5s cubic-bezier(.16,1,.3,1);
+  position:relative;
+}
+.gf::after {
+  content:''; position:absolute; inset:0;
+  background:repeating-linear-gradient(90deg,
+    transparent 0,transparent 4px,rgba(0,0,0,.22) 4px,rgba(0,0,0,.22) 5px);
+}
+
+/* ══════════════════════════════════
+   HORIZONTAL BARS
+══════════════════════════════════ */
+.hbl { display:flex; flex-direction:column; gap:9px; }
+.hbr { display:flex; align-items:center; gap:10px; }
+.hbl-l { width:130px; font-size:9px; color:var(--tx2); text-align:right; flex-shrink:0; }
+.hbt {
+  flex:1; height:18px;
+  background:rgba(255,255,255,.03); border:1px solid var(--b0); border-radius:1px;
+  position:relative; overflow:hidden;
+}
+.hbf {
+  height:100%; display:flex; align-items:center; justify-content:flex-end;
+  padding-right:7px; border-radius:1px;
+  transition:width 1.5s cubic-bezier(.16,1,.3,1);
+  position:relative;
+}
+.hbf::after { content:''; position:absolute;top:0;right:0;width:2px;height:100%;background:rgba(255,255,255,.4); }
+.hbv { font-family:'Orbitron',monospace; font-size:8.5px; color:#fff; position:relative; z-index:1; }
+
+/* ══════════════════════════════════
+   DONUT
+══════════════════════════════════ */
+.donut-wrap { display:flex; align-items:center; gap:18px; }
+.dleg { display:flex; flex-direction:column; gap:8px; flex:1; }
+.dleg-row { display:flex; align-items:center; gap:7px; font-size:9px; color:var(--tx2); }
+.dleg-dot { width:9px;height:9px;border-radius:2px;flex-shrink:0; }
+.dleg-pct { margin-left:auto; font-family:'Orbitron',monospace; font-size:9px; color:var(--sv2); }
+
+/* ══════════════════════════════════
+   STAT BLOCK
+══════════════════════════════════ */
+.sb { display:grid; gap:1px; background:var(--b0); border-radius:2px; overflow:hidden; }
+.sc { background:var(--panel2); padding:12px; text-align:center; }
+.sv { font-family:'Orbitron',monospace; font-size:16px; font-weight:700; margin-bottom:2px; }
+.sl { font-size:7.5px; letter-spacing:2px; color:var(--tx3); }
+
+/* ══════════════════════════════════
+   EVENT LIST
+══════════════════════════════════ */
+.evl { display:flex; flex-direction:column; }
+.evi {
+  display:flex; gap:11px; padding:9px 4px;
+  border-bottom:1px solid rgba(42,48,64,.4);
+  position:relative; align-items:flex-start;
+  cursor:pointer; transition:background .15s; border-radius:2px;
+}
+.evi:hover { background:rgba(255,255,255,.025); }
+.evi:last-child { border-bottom:none; }
+.evi-yr {
+  font-family:'Orbitron',monospace; font-size:10px; font-weight:700;
+  color:var(--sv1); width:44px; flex-shrink:0;
+  text-shadow:0 0 8px rgba(200,208,220,.3);
+}
+.evi-dot { width:7px;height:7px;border-radius:50%;margin-top:3px;flex-shrink:0;box-shadow:0 0 5px currentColor; }
+.evi-line {
+  position:absolute; left:69px; top:18px; bottom:-9px; width:1px;
+  background:linear-gradient(180deg,var(--b1),transparent);
+}
+.evi-body { flex:1; }
+.evi-tag {
+  display:inline-block; font-size:7.5px; letter-spacing:1px;
+  padding:1px 5px; border:1px solid; border-radius:2px; margin-bottom:3px;
+}
+.evi-title { font-size:10.5px; color:var(--tx); line-height:1.4; margin-bottom:2px; }
+.evi-desc  { font-size:8.5px; color:var(--tx3); line-height:1.5; }
+
+/* ══════════════════════════════════
+   DATA TABLE
+══════════════════════════════════ */
+.dt { width:100%; border-collapse:collapse; }
+.dt th {
+  font-family:'Orbitron',monospace; font-size:7.5px; letter-spacing:2px;
+  color:var(--ac); text-align:left; padding:8px 12px;
+  border-bottom:1px solid var(--b0);
+  background:rgba(91,200,232,.04);
+}
+.dt td {
+  font-size:9.5px; padding:8px 12px;
+  border-bottom:1px solid rgba(42,48,64,.3);
+  color:var(--tx2); vertical-align:middle;
+}
+.dt tr:hover td { background:rgba(91,200,232,.04); }
+
+.chip {
+  display:inline-block; font-size:7.5px; letter-spacing:1px;
+  padding:2px 7px; border:1px solid; border-radius:2px;
+  font-family:'Orbitron',monospace;
+}
+.cg { color:var(--green);  border-color:var(--green);  background:rgba(68,200,122,.07); }
+.cr { color:var(--red);    border-color:var(--red);    background:rgba(216,64,64,.07); }
+.co { color:var(--amber);  border-color:var(--amber);  background:rgba(216,144,48,.07); }
+.cp { color:var(--purple); border-color:var(--purple); background:rgba(152,112,208,.07); }
+.cs { color:var(--sv2);    border-color:var(--b2);     background:rgba(154,168,188,.05); }
+
+/* ══════════════════════════════════
+   ALERTS
+══════════════════════════════════ */
+.alist { display:flex; flex-direction:column; gap:7px; }
+.aitem {
+  display:flex; gap:10px; align-items:flex-start;
+  padding:8px 11px; border-left:2px solid;
+  border-radius:0 2px 2px 0;
+  background:rgba(0,0,0,.2); cursor:pointer;
+  transition:opacity .2s;
+}
+.aitem:hover { opacity:.75; }
+.asev { font-family:'Orbitron',monospace; font-size:7.5px; letter-spacing:1px; flex-shrink:0; padding-top:1px; }
+.atxt { font-size:9.5px; color:var(--tx); line-height:1.5; }
+
+/* ══════════════════════════════════
+   SCROLLABLE
+══════════════════════════════════ */
+.sy { overflow-y:auto; max-height:330px; }
+.sy::-webkit-scrollbar { width:3px; }
+.sy::-webkit-scrollbar-track { background:transparent; }
+.sy::-webkit-scrollbar-thumb { background:var(--b2); border-radius:2px; }
+
+/* ══════════════════════════════════
+   SECTION LABEL
+══════════════════════════════════ */
+.sl2 {
+  font-family:'Orbitron',monospace; font-size:7.5px; letter-spacing:3px;
+  color:var(--tx3); margin-bottom:10px;
+  display:flex; align-items:center; gap:8px;
+}
+.sl2::after { content:''; flex:1; height:1px; background:linear-gradient(90deg,var(--b0),transparent); }
+
+/* ══════════════════════════════════
+   MAP DOTS
+══════════════════════════════════ */
+.map-dot {
+  position:absolute; width:8px; height:8px; border-radius:50%;
+  transform:translate(-50%,-50%); cursor:pointer;
+}
+.map-dot::before {
+  content:''; position:absolute; inset:-5px; border-radius:50%;
+  border:1px solid currentColor; opacity:.4;
+  animation:dp 2.2s ease-in-out infinite;
+}
+.map-dot::after {
+  content:attr(data-l); position:absolute; top:12px; left:50%;
+  transform:translateX(-50%); font-size:7.5px; white-space:nowrap;
+  color:currentColor; letter-spacing:1px; pointer-events:none;
+  font-family:'Orbitron',monospace;
+}
+@keyframes dp { 0%,100%{transform:scale(1);opacity:.4} 50%{transform:scale(2.2);opacity:0} }
+
+/* ══════════════════════════════════
+   TOOLTIP
+══════════════════════════════════ */
+.tw { position:relative; }
+.tw:hover .tt { display:block; }
+.tt {
+  display:none; position:absolute; bottom:110%; left:50%;
+  transform:translateX(-50%);
+  background:var(--panel2); border:1px solid var(--ac);
+  color:var(--ac); font-size:8px; padding:4px 10px; white-space:nowrap;
+  z-index:300; letter-spacing:1px; border-radius:2px;
+  box-shadow:var(--glow-ac); pointer-events:none;
+}
+
+/* ══════════════════════════════════
+   FOOTER / WATERMARK
+══════════════════════════════════ */
+.footer {
+  position:relative; z-index:1;
+  display:flex; align-items:center; justify-content:space-between;
+  padding:10px 28px;
+  border-top:1px solid var(--b0);
+  background:rgba(10,12,18,.8);
+}
+.footer-left {
+  display:flex; align-items:center; gap:12px;
+  font-size:7.5px; letter-spacing:2px; color:var(--tx3);
+}
+.footer-right {
+  font-family:'Orbitron',monospace; font-size:7px; letter-spacing:2px;
+  color:var(--tx3);
+}
+.footer-brand {
+  font-family:'Orbitron',monospace; font-size:8px; letter-spacing:2px;
+  color:var(--sv3);
+}
+.footer-brand span { color:var(--sv1); }
+
+/* ══════════════════════════════════
+   GLITCH (very subtle on title)
+══════════════════════════════════ */
+@keyframes glitch {
+  0%,93%,100%{clip-path:none;transform:none}
+  94%{clip-path:inset(15% 0 60% 0);transform:skewX(-1.5deg)}
+  95%{clip-path:inset(70% 0 5% 0);transform:skewX(1.5deg)}
+  96%{clip-path:none;transform:none}
+  98%{clip-path:inset(25% 0 40% 0);transform:skewX(-.5deg)}
+  99%{clip-path:none;transform:none}
+}
+.glitch { animation:glitch 9s ease-in-out infinite; }
+
+</style>
+</head>
+<body>
+
+<div class="conf-stamp">CONFIDENCIAL</div>
+
+<!-- ══ ACCESS BANNER ══ -->
+<div class="access-banner">
+  <div class="access-banner-left">
+    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+      <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+    </svg>
+    ACESSO RESTRITO · CONFIDENCIAL · SOMENTE EXECUTIVOS DE ALTO ESCALÃO · NÍVEL DE AUTORIZAÇÃO: ALPHA-7
+  </div>
+  <div class="access-banner-right">LEANXANDRIA CORP · AUTORIZAÇÃO EUROBANK EEC · REF: LXA-2077-EB-EXEC</div>
+</div>
+
+<!-- ══ HEADER ══ -->
+<header class="header">
+  <div class="header-left">
+
+    <!-- EuroBank Silver Coin Logo -->
+    <svg class="coin-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <!-- Silver coin radial gradient -->
+        <radialGradient id="cgOuter" cx="45%" cy="38%" r="58%">
+          <stop offset="0%"  stop-color="#e8ecf2"/>
+          <stop offset="30%" stop-color="#c0c8d8"/>
+          <stop offset="65%" stop-color="#8090a8"/>
+          <stop offset="100%" stop-color="#404858"/>
+        </radialGradient>
+        <radialGradient id="cgInner" cx="40%" cy="35%" r="56%">
+          <stop offset="0%"  stop-color="#d8e0ec"/>
+          <stop offset="45%" stop-color="#a0b0c4"/>
+          <stop offset="100%" stop-color="#5a6878"/>
+        </radialGradient>
+        <radialGradient id="cgFace" cx="38%" cy="32%" r="58%">
+          <stop offset="0%"  stop-color="#d0d8e8"/>
+          <stop offset="55%" stop-color="#98a8bc"/>
+          <stop offset="100%" stop-color="#58687a"/>
+        </radialGradient>
+        <linearGradient id="shine" x1="20%" y1="10%" x2="80%" y2="90%">
+          <stop offset="0%"  stop-color="#f0f4f8" stop-opacity=".7"/>
+          <stop offset="40%" stop-color="#d0d8e8" stop-opacity=".3"/>
+          <stop offset="100%" stop-color="#506070" stop-opacity=".1"/>
+        </linearGradient>
+        <filter id="coin-shadow">
+          <feDropShadow dx="1" dy="2" stdDeviation="2" flood-color="#000" flood-opacity=".6"/>
+        </filter>
+      </defs>
+
+      <!-- Outer rim (dark ring) -->
+      <circle cx="50" cy="50" r="49" fill="#1e2430"/>
+      <!-- Thin bright rim -->
+      <circle cx="50" cy="50" r="48" fill="none" stroke="#a0b0c4" stroke-width="1.2" opacity=".5"/>
+
+      <!-- Main coin disc -->
+      <circle cx="50" cy="50" r="46" fill="url(#cgOuter)"/>
+
+      <!-- Inner ridge circle -->
+      <circle cx="50" cy="50" r="43" fill="none" stroke="#c8d0dc" stroke-width=".6" opacity=".5"/>
+      <circle cx="50" cy="50" r="40" fill="url(#cgInner)" opacity=".5"/>
+
+      <!-- Decorative dashes ring -->
+      <circle cx="50" cy="50" r="42" fill="none" stroke="#a0b0c4" stroke-width=".5"
+              stroke-dasharray="2.5 3.5" opacity=".35"/>
+
+      <!-- ── FACE (classical European profile, right-facing) ── -->
+      <!-- Back of head / hair mass -->
+      <ellipse cx="46" cy="40" rx="13" ry="16" fill="url(#cgFace)"/>
+      <!-- Laurel wreath band -->
+      <path d="M34,34 Q38,26 47,24 Q56,23 61,30 Q58,27 50,26 Q42,26 36,33Z"
+            fill="#9aacbf" opacity=".8"/>
+      <!-- individual laurel leaves -->
+      <ellipse cx="38" cy="29" rx="3.5" ry="1.6" fill="#b0c0d0" transform="rotate(-30,38,29)" opacity=".9"/>
+      <ellipse cx="44" cy="25.5" rx="3.5" ry="1.6" fill="#b0c0d0" transform="rotate(-10,44,25.5)" opacity=".9"/>
+      <ellipse cx="51" cy="24.5" rx="3.5" ry="1.6" fill="#b0c0d0" transform="rotate(10,51,24.5)" opacity=".9"/>
+      <ellipse cx="57" cy="26.5" rx="3.5" ry="1.6" fill="#b0c0d0" transform="rotate(28,57,26.5)" opacity=".9"/>
+      <!-- face profile -->
+      <path d="M58,33 Q62,38 60,46 Q57,52 53,55 L50,56 L48,55 Q45,54 44,50 Q43,45 46,40 Q49,35 55,33 Z"
+            fill="url(#cgFace)"/>
+      <!-- Neck -->
+      <rect x="46" y="54" width="8" height="7" rx="2" fill="url(#cgFace)" opacity=".85"/>
+      <!-- Shoulder drape -->
+      <ellipse cx="50" cy="64" rx="16" ry="5" fill="url(#cgFace)" opacity=".65"/>
+      <!-- Eye (subtle indent) -->
+      <ellipse cx="56" cy="39" rx="1.8" ry="1.2" fill="#506070" opacity=".7"/>
+      <!-- Nose profile line -->
+      <path d="M60,36 Q63,40 61,44" stroke="#7090a8" stroke-width=".8" fill="none" opacity=".6"/>
+      <!-- Lip -->
+      <path d="M59,47 Q61,48 60,50" stroke="#7090a8" stroke-width=".7" fill="none" opacity=".5"/>
+
+      <!-- Shine overlay -->
+      <circle cx="50" cy="50" r="46" fill="url(#shine)" opacity=".5"/>
+
+      <!-- Bottom text band -->
+      <path d="M18,74 A38,38,0,0,0,82,74" fill="#2a3040" opacity=".5"/>
+      <line x1="18" y1="73" x2="82" y2="73" stroke="#8090a4" stroke-width=".6" opacity=".5"/>
+
+      <!-- EuroBank text -->
+      <text x="50" y="84" font-family="Orbitron, monospace" font-size="8.5" font-weight="700"
+            fill="#c8d4e4" text-anchor="middle" letter-spacing="1.5" opacity=".95">EuroBank</text>
+
+      <!-- Stars -->
+      <text x="22" y="80" font-size="4.5" fill="#a0b0c4" opacity=".6">★</text>
+      <text x="74" y="80" font-size="4.5" fill="#a0b0c4" opacity=".6">★</text>
+    </svg>
+
+    <div class="header-divider"></div>
+
+    <div class="header-titles">
+      <div class="header-brand glitch">INTELLIGENCE MATRIX</div>
+      <div class="header-sub">EUROPEAN FINANCIAL AUTHORITY · EEC CORPORATE ANALYTICS</div>
+    </div>
+  </div>
+
+  <div class="header-right">
+    <div class="maker-badge">
+      PRODUZIDO POR<br>
+      <span>LEANXANDRIA CORP</span>
+    </div>
+    <div class="live-pill"><div class="live-dot"></div>NET FEED LIVE</div>
+    <div class="hdr-clock">
+      <div class="hdr-clock-year">◈ ANO 2077 ◈</div>
+      <div id="clock">--:--:--</div>
+    </div>
+    <div class="conf-badge">⬛ CONFIDENCIAL · EXEC ALPHA</div>
+  </div>
+</header>
+
+<!-- ══ TICKER ══ -->
+<div class="ticker">
+  <div class="ticker-track">
+    <!-- repeat twice for seamless loop -->
+    <div class="ticker-seg">
+      <span class="ty">€$</span><span class="ticker-sep">·</span>
+      BACKING INDEX <span class="tg">99.7%</span> <span class="ticker-sep">|</span>
+      FILIAIS GLOBAIS <span class="tg">847</span> <span class="ticker-sep">|</span>
+      COFRES SALZBURG <span class="tg">NOMINAL</span> <span class="ticker-sep">|</span>
+      <span class="tr">⚠ NETWATCH · JOHN GOOD AI</span> <span class="ticker-sep">|</span>
+      MINT NC <span class="tg">€$4.2M/DIA</span> <span class="ticker-sep">|</span>
+      EEC COUNCIL <span class="tg">94.1%</span> <span class="ticker-sep">|</span>
+      4ª GUERRA CORP <span class="tr">CLASSIFICADO</span> <span class="ticker-sep">|</span>
+      LAZARUS CONTRACT <span class="tc">ATIVO 2078</span> <span class="ticker-sep">|</span>
+      IHAG LIQUIDATION <span class="tg">CONCLUÍDO</span> <span class="ticker-sep">|</span>
+      VOL. TRANSAÇÕES <span class="tg">▲3.2%</span> <span class="ticker-sep">|</span>
+      ATIVOS TOTAIS <span class="tg">€$2.7T</span>
+    </div>
+    <div class="ticker-seg">
+      <span class="ty">€$</span><span class="ticker-sep">·</span>
+      BACKING INDEX <span class="tg">99.7%</span> <span class="ticker-sep">|</span>
+      FILIAIS GLOBAIS <span class="tg">847</span> <span class="ticker-sep">|</span>
+      COFRES SALZBURG <span class="tg">NOMINAL</span> <span class="ticker-sep">|</span>
+      <span class="tr">⚠ NETWATCH · JOHN GOOD AI</span> <span class="ticker-sep">|</span>
+      MINT NC <span class="tg">€$4.2M/DIA</span> <span class="ticker-sep">|</span>
+      EEC COUNCIL <span class="tg">94.1%</span> <span class="ticker-sep">|</span>
+      4ª GUERRA CORP <span class="tr">CLASSIFICADO</span> <span class="ticker-sep">|</span>
+      LAZARUS CONTRACT <span class="tc">ATIVO 2078</span> <span class="ticker-sep">|</span>
+      IHAG LIQUIDATION <span class="tg">CONCLUÍDO</span> <span class="ticker-sep">|</span>
+      VOL. TRANSAÇÕES <span class="tg">▲3.2%</span> <span class="ticker-sep">|</span>
+      ATIVOS TOTAIS <span class="tg">€$2.7T</span>
+    </div>
+  </div>
+</div>
+
+<!-- ══ NAV ══ -->
+<nav class="nav">
+  <div class="nav-tab active" data-pg="overview"    onclick="switchPg(this)">VISÃO GERAL</div>
+  <div class="nav-tab"        data-pg="timeline"    onclick="switchPg(this)">LINHA DO TEMPO</div>
+  <div class="nav-tab"        data-pg="operations"  onclick="switchPg(this)">OPERAÇÕES<div class="nav-badge"></div></div>
+  <div class="nav-tab"        data-pg="assets"      onclick="switchPg(this)">ATIVOS &amp; PODER</div>
+  <div class="nav-tab"        data-pg="threats"     onclick="switchPg(this)">AMEAÇAS &amp; RIVAIS<div class="nav-badge"></div></div>
+  <div class="nav-spacer"></div>
+  <div class="nav-info">
+    <div class="nav-info-dot"></div>
+    LEANXANDRIA CORP · EUROBANK ANALYTICS v5.1 · EEC CLASSIFIED
+  </div>
+</nav>
+
+<!-- ════════════════════════════════════════
+     PAGES
+════════════════════════════════════════ -->
+<main class="main">
+
+<!-- ╔══════════════ OVERVIEW ══════════════╗ -->
+<div class="page active" id="page-overview">
+
+  <!-- KPIs -->
+  <div class="kpi-row">
+    <div class="kpi tw" style="--kc:var(--sv1)">
+      <div class="tt">Total de ativos sob gestão EuroBank 2077</div>
+      <div class="kpi-lbl">ATIVOS SOB GESTÃO</div>
+      <div class="kpi-val">€$2.7T</div>
+      <div class="kpi-sub"><span class="up">▲ 14.3%</span>&nbsp;vs 2076</div>
+      <svg class="kpi-spark" viewBox="0 0 100 30" preserveAspectRatio="none">
+        <defs><linearGradient id="sg1" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#c8d0dc" stop-opacity=".35"/>
+          <stop offset="100%" stop-color="#c8d0dc" stop-opacity=".01"/>
+        </linearGradient></defs>
+        <polyline points="0,25 14,20 28,23 40,14 52,17 64,9 76,11 88,5 100,2" fill="none" stroke="#c8d0dc" stroke-width="1.6"/>
+        <polygon  points="0,25 14,20 28,23 40,14 52,17 64,9 76,11 88,5 100,2 100,30 0,30" fill="url(#sg1)"/>
+      </svg>
+    </div>
+
+    <div class="kpi tw" style="--kc:var(--ac)">
+      <div class="tt">Transações eurodollar processadas por dia</div>
+      <div class="kpi-lbl">TRANSAÇÕES / DIA</div>
+      <div class="kpi-val">84.2M</div>
+      <div class="kpi-sub"><span class="up">▲ 6.8%</span>&nbsp;global</div>
+      <svg class="kpi-spark" viewBox="0 0 100 30" preserveAspectRatio="none">
+        <defs><linearGradient id="sg2" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#5bc8e8" stop-opacity=".35"/>
+          <stop offset="100%" stop-color="#5bc8e8" stop-opacity=".01"/>
+        </linearGradient></defs>
+        <polyline points="0,27 14,22 28,25 40,17 52,20 64,12 76,9 88,6 100,3" fill="none" stroke="#5bc8e8" stroke-width="1.6"/>
+        <polygon  points="0,27 14,22 28,25 40,17 52,20 64,12 76,9 88,6 100,3 100,30 0,30" fill="url(#sg2)"/>
+      </svg>
+    </div>
+
+    <div class="kpi tw" style="--kc:var(--green)">
+      <div class="tt">Filiais EuroBank ativas globalmente</div>
+      <div class="kpi-lbl">FILIAIS ATIVAS</div>
+      <div class="kpi-val">847</div>
+      <div class="kpi-sub"><span class="up">▲ 23</span>&nbsp;este ano</div>
+      <svg class="kpi-spark" viewBox="0 0 100 30" preserveAspectRatio="none">
+        <defs><linearGradient id="sg3" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#44c87a" stop-opacity=".35"/>
+          <stop offset="100%" stop-color="#44c87a" stop-opacity=".01"/>
+        </linearGradient></defs>
+        <polyline points="0,27 14,25 28,22 40,20 52,17 64,13 76,10 88,7 100,4" fill="none" stroke="#44c87a" stroke-width="1.6"/>
+        <polygon  points="0,27 14,25 28,22 40,20 52,17 64,13 76,10 88,7 100,4 100,30 0,30" fill="url(#sg3)"/>
+      </svg>
+    </div>
+
+    <div class="kpi tw" style="--kc:var(--amber)">
+      <div class="tt">Participação no mercado global de câmbio</div>
+      <div class="kpi-lbl">MARKET SHARE GLOBAL</div>
+      <div class="kpi-val">38.4%</div>
+      <div class="kpi-sub"><span class="up">▲ 2.1pp</span>&nbsp;consolidando</div>
+      <svg class="kpi-spark" viewBox="0 0 100 30" preserveAspectRatio="none">
+        <defs><linearGradient id="sg4" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#d89030" stop-opacity=".35"/>
+          <stop offset="100%" stop-color="#d89030" stop-opacity=".01"/>
+        </linearGradient></defs>
+        <polyline points="0,20 14,22 28,17 40,13 52,16 64,10 76,8 88,9 100,5" fill="none" stroke="#d89030" stroke-width="1.6"/>
+        <polygon  points="0,20 14,22 28,17 40,13 52,16 64,10 76,8 88,9 100,5 100,30 0,30" fill="url(#sg4)"/>
+      </svg>
+    </div>
+
+    <div class="kpi tw" style="--kc:var(--purple)">
+      <div class="tt">Índice de segurança NET – avaliado pela NetWatch</div>
+      <div class="kpi-lbl">NET SECURITY INDEX</div>
+      <div class="kpi-val">97.3</div>
+      <div class="kpi-sub"><span class="dn">▼ 0.4</span>&nbsp;monitorado</div>
+      <svg class="kpi-spark" viewBox="0 0 100 30" preserveAspectRatio="none">
+        <defs><linearGradient id="sg5" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#9870d0" stop-opacity=".35"/>
+          <stop offset="100%" stop-color="#9870d0" stop-opacity=".01"/>
+        </linearGradient></defs>
+        <polyline points="0,5 14,7 28,4 40,6 52,5 64,8 76,8 88,11 100,13" fill="none" stroke="#9870d0" stroke-width="1.6"/>
+        <polygon  points="0,5 14,7 28,4 40,6 52,5 64,8 76,8 88,11 100,13 100,30 0,30" fill="url(#sg5)"/>
+      </svg>
+    </div>
+  </div>
+
+  <!-- Row 2 -->
+  <div class="g65">
+    <div class="panel">
+      <div class="ph">
+        <div class="ph-title"><div class="ph-icon">◈</div>EVOLUÇÃO DO PODER FINANCEIRO · 1988–2077</div>
+        <div class="ph-tag">SÉRIE HISTÓRICA</div>
+      </div>
+      <div class="pb"><canvas id="mainChart" style="width:100%;height:215px;display:block"></canvas></div>
+    </div>
+
+    <div class="panel">
+      <div class="ph">
+        <div class="ph-title"><div class="ph-icon">◈</div>SEGMENTAÇÃO DE SERVIÇOS</div>
+        <div class="ph-tag">2077</div>
+      </div>
+      <div class="pb">
+        <div class="donut-wrap" style="margin-bottom:14px">
+          <canvas id="donutChart" width="140" height="140"></canvas>
+          <div class="dleg">
+            <div class="dleg-row"><div class="dleg-dot" style="background:#5bc8e8"></div>Câmbio &amp; Reservas<div class="dleg-pct">32%</div></div>
+            <div class="dleg-row"><div class="dleg-dot" style="background:#c8d0dc"></div>Investment Banking<div class="dleg-pct">24%</div></div>
+            <div class="dleg-row"><div class="dleg-dot" style="background:#44c87a"></div>Empréstimos Corp.<div class="dleg-pct">18%</div></div>
+            <div class="dleg-row"><div class="dleg-dot" style="background:#d89030"></div>Casa da Moeda<div class="dleg-pct">14%</div></div>
+            <div class="dleg-row"><div class="dleg-dot" style="background:#9870d0"></div>Corretagem &amp; Bonds<div class="dleg-pct">8%</div></div>
+            <div class="dleg-row"><div class="dleg-dot" style="background:#d84040"></div>Ops. Cobertas<div class="dleg-pct">4%</div></div>
+          </div>
+        </div>
+        <div class="sb" style="grid-template-columns:1fr 1fr 1fr">
+          <div class="sc"><div class="sv" style="color:var(--sv1)">€$2.7T</div><div class="sl">ATIVOS</div></div>
+          <div class="sc"><div class="sv" style="color:var(--green)">AAA+</div><div class="sl">RATING EEC</div></div>
+          <div class="sc"><div class="sv" style="color:var(--amber)">6</div><div class="sl">DIVISÕES</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Row 3 -->
+  <div class="g2">
+    <div class="panel">
+      <div class="ph">
+        <div class="ph-title"><div class="ph-icon">◈</div>VOLUME FINANCEIRO POR REGIÃO — 2077</div>
+        <div class="ph-tag">€$ BILHÕES</div>
+      </div>
+      <div class="pb"><div class="hbl" id="regionBars"></div></div>
+    </div>
+
+    <div class="panel">
+      <div class="ph">
+        <div class="ph-title"><div class="ph-icon">◈</div>INTEL FEED · ALERTAS DO SISTEMA</div>
+        <div class="ph-tag">TEMPO REAL</div>
+      </div>
+      <div class="pb">
+        <div class="alist">
+          <div class="aitem" style="border-color:var(--red);background:rgba(216,64,64,.06)" onclick="this.style.opacity='.35'">
+            <div class="asev" style="color:var(--red)">CRÍTICO</div>
+            <div class="atxt">John Good detecta intrusão na NET Architecture do Glen. NetWatch notificado. Lazarus em alerta máximo.</div>
+          </div>
+          <div class="aitem" style="border-color:var(--amber);background:rgba(216,144,48,.06)" onclick="this.style.opacity='.35'">
+            <div class="asev" style="color:var(--amber)">ALTO</div>
+            <div class="atxt">Flutuação de €$: +0.003% acima do threshold no Hemisfério Ocidental. Ajuste automático ativado.</div>
+          </div>
+          <div class="aitem" style="border-color:var(--sv3);background:rgba(100,120,140,.05)" onclick="this.style.opacity='.35'">
+            <div class="asev" style="color:var(--sv2)">MÉDIO</div>
+            <div class="atxt">EEC Euro Council solicita relatório Q4 – exposição à NUSA. Prazo: 2077.06.15. Compliance acionado.</div>
+          </div>
+          <div class="aitem" style="border-color:var(--ac);background:rgba(91,200,232,.05)" onclick="this.style.opacity='.35'">
+            <div class="asev" style="color:var(--ac)">INFO</div>
+            <div class="atxt">Cofres Salzburg: inspeção trimestral concluída. 847 t validadas. Sistemas anti-nuke — NOMINAL.</div>
+          </div>
+          <div class="aitem" style="border-color:var(--green);background:rgba(68,200,122,.05)" onclick="this.style.opacity='.35'">
+            <div class="asev" style="color:var(--green)">OK</div>
+            <div class="atxt">Mint Night City: €$4.2M/dia. Produção de eurobucks físicos e digitais. Autorização NC — ATIVA.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /overview -->
+
+<!-- ╔══════════════ TIMELINE ══════════════╗ -->
+<div class="page" id="page-timeline">
+  <div class="g40">
+
+    <div class="panel">
+      <div class="ph">
+        <div class="ph-title"><div class="ph-icon">◈</div>CRONOLOGIA · 1988–2077</div>
+        <div class="ph-tag">EVENTOS-CHAVE</div>
+      </div>
+      <div class="pb" style="padding:10px 14px">
+        <div class="sy">
+          <div class="evl">
+            <div class="evi">
+              <div class="evi-yr">1988</div><div class="evi-dot" style="color:var(--sv3);background:var(--sv3)"></div><div class="evi-line"></div>
+              <div class="evi-body">
+                <div class="evi-tag" style="color:var(--sv3);border-color:var(--sv3)">FUNDAÇÃO</div>
+                <div class="evi-title">EuroBank fundado por fusão de bancos europeus</div>
+                <div class="evi-desc">Instituição pública não-corporativa com fortes laços à EEC. Cofres anti-nuke em Salzburg, Áustria.</div>
+              </div>
+            </div>
+            <div class="evi">
+              <div class="evi-yr">1992</div><div class="evi-dot" style="color:var(--ac);background:var(--ac)"></div><div class="evi-line"></div>
+              <div class="evi-body">
+                <div class="evi-tag" style="color:var(--ac);border-color:var(--ac)">MOEDA</div>
+                <div class="evi-title">Criação do Eurodollar — Tratado EEC</div>
+                <div class="evi-desc">EuroBank torna-se emissor oficial do €$. Padrão de valor global estabelecido. Fed americano investe secretamente.</div>
+              </div>
+            </div>
+            <div class="evi">
+              <div class="evi-yr">1994</div><div class="evi-dot" style="color:var(--red);background:var(--red)"></div><div class="evi-line"></div>
+              <div class="evi-body">
+                <div class="evi-tag" style="color:var(--red);border-color:var(--red)">CRISE</div>
+                <div class="evi-title">Crash financeiro global</div>
+                <div class="evi-desc">Crash severo após manipulações expostas. EuroBank sobrevive e consolida papel de âncora financeira global.</div>
+              </div>
+            </div>
+            <div class="evi">
+              <div class="evi-yr">2013</div><div class="evi-dot" style="color:var(--sv1);background:var(--sv1)"></div><div class="evi-line"></div>
+              <div class="evi-body">
+                <div class="evi-tag" style="color:var(--sv1);border-color:var(--sv1)">EXPANSÃO</div>
+                <div class="evi-title">Eurasiabank Plaza — QG Norte-Americano, Night City</div>
+                <div class="evi-desc">Um dos maiores edifícios do City &amp; Corp. District. Linhas diretas a todas as bolsas. Controla o Hemisfério Ocidental.</div>
+              </div>
+            </div>
+            <div class="evi">
+              <div class="evi-yr">2020</div><div class="evi-dot" style="color:var(--amber);background:var(--amber)"></div><div class="evi-line"></div>
+              <div class="evi-body">
+                <div class="evi-tag" style="color:var(--amber);border-color:var(--amber)">DOMÍNIO</div>
+                <div class="evi-title">€$ torna-se base de todas as transações globais</div>
+                <div class="evi-desc">EuroBank é a espinha dorsal financeira mundial. Acordo secreto de investimento cruzado com o Fed americano selado.</div>
+              </div>
+            </div>
+            <div class="evi">
+              <div class="evi-yr">2021</div><div class="evi-dot" style="color:var(--purple);background:var(--purple)"></div><div class="evi-line"></div>
+              <div class="evi-body">
+                <div class="evi-tag" style="color:var(--purple);border-color:var(--purple)">OPS ENCOBERTA</div>
+                <div class="evi-title">Operação IHAG — Manipulação das aquacorps</div>
+                <div class="evi-desc">EuroBank manipula OTEC e CINO em endividamento mútuo para adquirir IHAG e dominar tecnologia naval europeia.</div>
+              </div>
+            </div>
+            <div class="evi">
+              <div class="evi-yr">2022</div><div class="evi-dot" style="color:var(--red);background:var(--red)"></div><div class="evi-line"></div>
+              <div class="evi-body">
+                <div class="evi-tag" style="color:var(--red);border-color:var(--red)">4ª GUERRA CORP</div>
+                <div class="evi-title">Plano escapa ao controle — Arasaka vs Militech</div>
+                <div class="evi-desc">Feb 22: EuroBank força cessar-fogo entre OTEC/CINO. Arasaka e Militech ignoram mediação e escalam o conflito.</div>
+              </div>
+            </div>
+            <div class="evi">
+              <div class="evi-yr">2023</div><div class="evi-dot" style="color:var(--red);background:var(--red)"></div><div class="evi-line"></div>
+              <div class="evi-body">
+                <div class="evi-tag" style="color:var(--red);border-color:var(--red)">HOLOCAUSTO</div>
+                <div class="evi-title">Night City Holocaust — Eurasiabank Plaza destruída</div>
+                <div class="evi-desc">Bomba Arasaka aniquila o distrito corporativo. QG da EuroBank em NC colapsa. Presença física perdida por décadas.</div>
+              </div>
+            </div>
+            <div class="evi">
+              <div class="evi-yr">2045</div><div class="evi-dot" style="color:var(--green);background:var(--green)"></div><div class="evi-line"></div>
+              <div class="evi-body">
+                <div class="evi-tag" style="color:var(--green);border-color:var(--green)">RETORNO</div>
+                <div class="evi-title">Reabertura — The Glen District, Night City</div>
+                <div class="evi-desc">Nova sede com IA John Good. Autorização para cunhar €$ físico e digital. Segurança Lazarus. NetWatch em supervisão.</div>
+              </div>
+            </div>
+            <div class="evi">
+              <div class="evi-yr">2077</div><div class="evi-dot" style="color:var(--sv1);background:var(--sv1)"></div>
+              <div class="evi-body">
+                <div class="evi-tag" style="color:var(--sv1);border-color:var(--sv1)">ATUAL</div>
+                <div class="evi-title">EuroBank — Instituição dominante global</div>
+                <div class="evi-desc">€$2.7T · 847 filiais · 38.4% câmbio global · Cofres nuke-proof Áustria · IA John Good operacional pleno.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="ph">
+        <div class="ph-title"><div class="ph-icon">◈</div>PERFORMANCE POR ERA HISTÓRICA</div>
+        <div class="ph-tag">ANÁLISE COMPARATIVA</div>
+      </div>
+      <div class="pb">
+        <div class="sl2">ÍNDICE DE INFLUÊNCIA GLOBAL (0–100)</div>
+        <div class="gstack" style="margin-bottom:20px">
+          <div class="gi">
+            <div class="gm"><span class="gl">Fundação 1988–1992</span><span class="gv" style="color:var(--sv3)">12</span></div>
+            <div class="gt"><div class="gf" style="width:12%;background:linear-gradient(90deg,var(--sv4),var(--sv3))"></div></div>
+          </div>
+          <div class="gi">
+            <div class="gm"><span class="gl">Expansão EEC 1992–2013</span><span class="gv" style="color:var(--ac)">41</span></div>
+            <div class="gt"><div class="gf" style="width:41%;background:linear-gradient(90deg,var(--ac3),var(--ac))"></div></div>
+          </div>
+          <div class="gi">
+            <div class="gm"><span class="gl">Era Dourada 2013–2021</span><span class="gv" style="color:var(--sv1)">78</span></div>
+            <div class="gt"><div class="gf" style="width:78%;background:linear-gradient(90deg,var(--sv4),var(--sv1))"></div></div>
+          </div>
+          <div class="gi">
+            <div class="gm"><span class="gl">4ª Guerra Corp 2021–2023</span><span class="gv" style="color:var(--amber)">62</span></div>
+            <div class="gt"><div class="gf" style="width:62%;background:linear-gradient(90deg,#664400,var(--amber))"></div></div>
+          </div>
+          <div class="gi">
+            <div class="gm"><span class="gl">Time of the Red 2023–2045</span><span class="gv" style="color:var(--red)">35</span></div>
+            <div class="gt"><div class="gf" style="width:35%;background:linear-gradient(90deg,#550000,var(--red))"></div></div>
+          </div>
+          <div class="gi">
+            <div class="gm"><span class="gl">Reconstrução 2045–2077</span><span class="gv" style="color:var(--green)">91</span></div>
+            <div class="gt"><div class="gf" style="width:91%;background:linear-gradient(90deg,#004422,var(--green))"></div></div>
+          </div>
+        </div>
+
+        <div class="sl2">ATIVOS GERENCIADOS (€$ TRILHÕES)</div>
+        <div class="hbl">
+          <div class="hbr"><div class="hbl-l">1992</div><div class="hbt"><div class="hbf" style="width:3%;background:linear-gradient(90deg,var(--sv4),var(--sv3))"><span class="hbv">0.08T</span></div></div></div>
+          <div class="hbr"><div class="hbl-l">2005</div><div class="hbt"><div class="hbf" style="width:22%;background:linear-gradient(90deg,var(--ac3),var(--ac))"><span class="hbv">0.6T</span></div></div></div>
+          <div class="hbr"><div class="hbl-l">2013</div><div class="hbt"><div class="hbf" style="width:41%;background:linear-gradient(90deg,var(--sv4),var(--sv2))"><span class="hbv">1.1T</span></div></div></div>
+          <div class="hbr"><div class="hbl-l">2020</div><div class="hbt"><div class="hbf" style="width:74%;background:linear-gradient(90deg,var(--sv3),var(--sv0))"><span class="hbv" style="color:#111">2.0T</span></div></div></div>
+          <div class="hbr"><div class="hbl-l">2023 (Crash)</div><div class="hbt"><div class="hbf" style="width:37%;background:linear-gradient(90deg,#550000,var(--red))"><span class="hbv">1.0T</span></div></div></div>
+          <div class="hbr"><div class="hbl-l">2045</div><div class="hbt"><div class="hbf" style="width:56%;background:linear-gradient(90deg,#004422,var(--green))"><span class="hbv">1.5T</span></div></div></div>
+          <div class="hbr"><div class="hbl-l" style="color:var(--sv1)">2077 (ATUAL)</div><div class="hbt"><div class="hbf" style="width:100%;background:linear-gradient(90deg,var(--sv3),var(--sv0))"><span class="hbv" style="color:#111">2.7T</span></div></div></div>
+        </div>
+
+        <div style="margin-top:18px">
+          <canvas id="eraBarChart" style="width:100%;height:140px;display:block"></canvas>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div><!-- /timeline -->
+
+<!-- ╔══════════════ OPERATIONS ══════════════╗ -->
+<div class="page" id="page-operations">
+  <div class="g2">
+
+    <div class="panel">
+      <div class="ph">
+        <div class="ph-title"><div class="ph-icon">◈</div>PRESENÇA GLOBAL · MAPA DE FILIAIS</div>
+        <div class="ph-tag">ESTRATÉGICO</div>
+      </div>
+      <div class="pb" style="padding:0">
+        <div style="position:relative;height:245px;background:var(--panel2);overflow:hidden">
+          <svg viewBox="0 0 800 380" style="width:100%;height:100%;position:absolute;inset:0;opacity:.3">
+            <path d="M70,70 L65,160 L100,200 L140,210 L170,190 L190,140 L175,100 L140,75 Z" fill="#3a4258" stroke="#4a5570" stroke-width="1"/>
+            <path d="M110,210 L95,290 L110,340 L145,360 L185,345 L200,310 L210,265 L190,230 Z" fill="#3a4258" stroke="#4a5570" stroke-width="1"/>
+            <path d="M330,50 L315,85 L325,110 L365,115 L400,100 L420,75 L405,52 L370,45 Z" fill="#3a4258" stroke="#4a5570" stroke-width="1"/>
+            <path d="M325,120 L305,190 L315,280 L345,315 L385,320 L420,285 L430,210 L415,155 L390,125 Z" fill="#3a4258" stroke="#4a5570" stroke-width="1"/>
+            <path d="M400,45 L415,30 L545,48 L600,85 L590,145 L555,175 L505,180 L460,155 L425,120 L400,90 Z" fill="#3a4258" stroke="#4a5570" stroke-width="1"/>
+            <path d="M545,230 L525,275 L555,310 L610,305 L650,270 L655,240 L635,220 Z" fill="#3a4258" stroke="#4a5570" stroke-width="1"/>
+            <line x1="0" y1="190" x2="800" y2="190" stroke="#4a5570" stroke-width=".5" stroke-dasharray="4 6" opacity=".4"/>
+            <line x1="400" y1="0" x2="400" y2="380" stroke="#4a5570" stroke-width=".5" stroke-dasharray="4 6" opacity=".4"/>
+          </svg>
+          <div class="map-dot" style="color:var(--sv1);background:var(--sv1);left:14%;top:47%"  data-l="NIGHT CITY"></div>
+          <div class="map-dot" style="color:var(--ac);background:var(--ac);left:42%;top:21%"    data-l="BRUXELAS HQ"></div>
+          <div class="map-dot" style="color:var(--purple);background:var(--purple);left:45%;top:25%" data-l="SALZBURG"></div>
+          <div class="map-dot" style="color:var(--green);background:var(--green);left:72%;top:29%"   data-l="TOKYO"></div>
+          <div class="map-dot" style="color:var(--amber);background:var(--amber);left:42%;top:55%"   data-l="LAGOS"></div>
+          <div class="map-dot" style="color:var(--sv3);background:var(--sv3);left:22%;top:68%"       data-l="SÃO PAULO"></div>
+        </div>
+        <div style="display:flex;gap:14px;padding:10px 16px;border-top:1px solid var(--b0);flex-wrap:wrap">
+          <span style="display:flex;align-items:center;gap:5px;font-size:8px;color:var(--sv1)"><span style="width:7px;height:7px;border-radius:50%;background:var(--sv1);display:block"></span>Night City</span>
+          <span style="display:flex;align-items:center;gap:5px;font-size:8px;color:var(--ac)"><span style="width:7px;height:7px;border-radius:50%;background:var(--ac);display:block"></span>HQ Europa</span>
+          <span style="display:flex;align-items:center;gap:5px;font-size:8px;color:var(--purple)"><span style="width:7px;height:7px;border-radius:50%;background:var(--purple);display:block"></span>Cofres Salzburg</span>
+          <span style="display:flex;align-items:center;gap:5px;font-size:8px;color:var(--green)"><span style="width:7px;height:7px;border-radius:50%;background:var(--green);display:block"></span>Filial Regional</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="ph">
+        <div class="ph-title"><div class="ph-icon">◈</div>DIVISÕES OPERACIONAIS</div>
+        <div class="ph-tag">ESTRUTURA 2077</div>
+      </div>
+      <div class="pb">
+        <table class="dt">
+          <thead><tr><th>DIVISÃO</th><th>FUNÇÃO</th><th>RECEITA</th><th>STATUS</th></tr></thead>
+          <tbody>
+            <tr><td style="color:var(--sv1);font-family:'Orbitron',monospace;font-size:8px">CÂMBIO &amp; RESERVAS</td><td>Backing €$, reservas EEC</td><td style="color:var(--ac)">32%</td><td><div class="chip cg">ATIVO</div></td></tr>
+            <tr><td style="color:var(--sv1);font-family:'Orbitron',monospace;font-size:8px">INVESTMENT BANKING</td><td>M&amp;A, bonds, derivativos</td><td style="color:var(--ac)">24%</td><td><div class="chip cg">ATIVO</div></td></tr>
+            <tr><td style="color:var(--sv1);font-family:'Orbitron',monospace;font-size:8px">CORPORATE LOANS</td><td>Financiamento megacorps</td><td style="color:var(--ac)">18%</td><td><div class="chip cg">ATIVO</div></td></tr>
+            <tr><td style="color:var(--sv1);font-family:'Orbitron',monospace;font-size:8px">MINT — CASA DA MOEDA</td><td>Emissão €$ físico + digital</td><td style="color:var(--ac)">14%</td><td><div class="chip cp">IA JOHN GOOD</div></td></tr>
+            <tr><td style="color:var(--sv1);font-family:'Orbitron',monospace;font-size:8px">BROKERAGE &amp; BONDS</td><td>Corretagem, ações, commodities</td><td style="color:var(--ac)">8%</td><td><div class="chip cg">ATIVO</div></td></tr>
+            <tr><td style="color:var(--sv1);font-family:'Orbitron',monospace;font-size:8px">OPERAÇÕES COBERTAS</td><td>Inteligência, manipulação mercado</td><td style="color:var(--ac)">4%</td><td><div class="chip cp">CLASSIFICADO</div></td></tr>
+          </tbody>
+        </table>
+        <div style="margin-top:14px">
+          <div class="sl2">SEGURANÇA · NIGHT CITY MINT</div>
+          <div class="gstack">
+            <div class="gi">
+              <div class="gm"><span class="gl">Lazarus Armed Guards</span><span class="gv" style="color:var(--green)">MÁXIMO</span></div>
+              <div class="gt"><div class="gf" style="width:95%;background:linear-gradient(90deg,#004422,var(--green))"></div></div>
+            </div>
+            <div class="gi">
+              <div class="gm"><span class="gl">Biometric Scan (3 camadas)</span><span class="gv" style="color:var(--green)">88/100</span></div>
+              <div class="gt"><div class="gf" style="width:88%;background:linear-gradient(90deg,#004422,var(--green))"></div></div>
+            </div>
+            <div class="gi">
+              <div class="gm"><span class="gl">NET Architecture (24/7)</span><span class="gv" style="color:var(--sv1)">CRÍTICO</span></div>
+              <div class="gt"><div class="gf" style="width:100%;background:linear-gradient(90deg,var(--sv4),var(--sv1))"></div></div>
+            </div>
+            <div class="gi">
+              <div class="gm"><span class="gl">John Good AI — NetWatch</span><span class="gv" style="color:var(--purple)">MONITORADO</span></div>
+              <div class="gt"><div class="gf" style="width:100%;background:linear-gradient(90deg,#330066,var(--purple))"></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="panel">
+    <div class="ph">
+      <div class="ph-title"><div class="ph-icon">◈</div>HISTÓRICO DE PROPRIEDADES · NIGHT CITY</div>
+      <div class="ph-tag">2013 → 2077</div>
+    </div>
+    <div class="pb">
+      <table class="dt">
+        <thead><tr><th>PROPRIEDADE</th><th>LOCALIZAÇÃO</th><th>ERA</th><th>FUNÇÃO</th><th>STATUS</th></tr></thead>
+        <tbody>
+          <tr><td style="color:var(--ac)">Eurasiabank Plaza</td><td>City &amp; Corp. District, NC</td><td>2013–2023</td><td>QG Norte-Americano — câmbio, bonds, trading global</td><td><div class="chip cr">DESTRUÍDA</div></td></tr>
+          <tr><td style="color:var(--ac)">EuroBank 1 Offices</td><td>Upper Eastside, NC</td><td>2013–2023</td><td>Filial corporativa — commodities internacionais</td><td><div class="chip cr">DESTRUÍDA</div></td></tr>
+          <tr><td style="color:var(--ac)">EuroBank Offices (Glen)</td><td>Glen District, NC</td><td>2045–2077</td><td>Mint + Banking — IA John Good — Filial + Cunhagem</td><td><div class="chip cg">OPERACIONAL</div></td></tr>
+          <tr><td style="color:var(--ac)">Cofres Salzburg</td><td>Áustria, Europa</td><td>1988–2077</td><td>Reservas anti-nuke EEC — Ouro, ativos, dados críticos</td><td><div class="chip cg">OPERACIONAL</div></td></tr>
+          <tr><td style="color:var(--ac)">HQ EEC — Bruxelas</td><td>Bruxelas, Europa</td><td>1988–2077</td><td>Sede central política-financeira, Euro Council</td><td><div class="chip cg">OPERACIONAL</div></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div><!-- /operations -->
+
+<!-- ╔══════════════ ASSETS ══════════════╗ -->
+<div class="page" id="page-assets">
+  <div class="g3">
+    <div class="panel">
+      <div class="ph"><div class="ph-title"><div class="ph-icon">◈</div>PODER POLÍTICO</div><div class="ph-tag">EEC COUNCIL</div></div>
+      <div class="pb">
+        <div class="gstack">
+          <div class="gi"><div class="gm"><span class="gl">Influência Euro Council</span><span class="gv" style="color:var(--ac)">94%</span></div><div class="gt"><div class="gf" style="width:94%;background:linear-gradient(90deg,var(--ac3),var(--ac))"></div></div></div>
+          <div class="gi"><div class="gm"><span class="gl">Proteção Militar EEC</span><span class="gv" style="color:var(--green)">88%</span></div><div class="gt"><div class="gf" style="width:88%;background:linear-gradient(90deg,#004422,var(--green))"></div></div></div>
+          <div class="gi"><div class="gm"><span class="gl">Poder Legislativo</span><span class="gv" style="color:var(--sv1)">76%</span></div><div class="gt"><div class="gf" style="width:76%;background:linear-gradient(90deg,var(--sv4),var(--sv1))"></div></div></div>
+          <div class="gi"><div class="gm"><span class="gl">Relação com NUSA</span><span class="gv" style="color:var(--amber)">42%</span></div><div class="gt"><div class="gf" style="width:42%;background:linear-gradient(90deg,#664400,var(--amber))"></div></div></div>
+          <div class="gi"><div class="gm"><span class="gl">Neutralidade Corporativa</span><span class="gv" style="color:var(--purple)">87%</span></div><div class="gt"><div class="gf" style="width:87%;background:linear-gradient(90deg,#330066,var(--purple))"></div></div></div>
+        </div>
+      </div>
+    </div>
+    <div class="panel">
+      <div class="ph"><div class="ph-title"><div class="ph-icon">◈</div>FORÇA FINANCEIRA</div><div class="ph-tag">MÉTRICAS 2077</div></div>
+      <div class="pb">
+        <div class="sb" style="grid-template-columns:1fr 1fr;margin-bottom:14px">
+          <div class="sc"><div class="sv" style="color:var(--sv1);font-size:14px">€$2.7T</div><div class="sl">ATIVOS TOTAIS</div></div>
+          <div class="sc"><div class="sv" style="color:var(--ac);font-size:14px">38.4%</div><div class="sl">MARKET SHARE</div></div>
+          <div class="sc"><div class="sv" style="color:var(--green);font-size:14px">847</div><div class="sl">FILIAIS</div></div>
+          <div class="sc"><div class="sv" style="color:var(--purple);font-size:14px">1 IA</div><div class="sl">JOHN GOOD</div></div>
+        </div>
+        <div class="gstack">
+          <div class="gi"><div class="gm"><span class="gl">Liquidez Global</span><span class="gv" style="color:var(--ac)">97%</span></div><div class="gt"><div class="gf" style="width:97%;background:linear-gradient(90deg,var(--ac3),var(--ac))"></div></div></div>
+          <div class="gi"><div class="gm"><span class="gl">Controle do €$</span><span class="gv" style="color:var(--sv1)">100%</span></div><div class="gt"><div class="gf" style="width:100%;background:linear-gradient(90deg,var(--sv4),var(--sv0))"></div></div></div>
+          <div class="gi"><div class="gm"><span class="gl">Reservas Ouro Salzburg</span><span class="gv" style="color:var(--amber)">847t</span></div><div class="gt"><div class="gf" style="width:82%;background:linear-gradient(90deg,#664400,var(--amber))"></div></div></div>
+        </div>
+      </div>
+    </div>
+    <div class="panel">
+      <div class="ph"><div class="ph-title"><div class="ph-icon">◈</div>PODER TECNOLÓGICO</div><div class="ph-tag">NET &amp; IA 2077</div></div>
+      <div class="pb">
+        <div style="padding:10px;border:1px solid rgba(152,112,208,.3);border-radius:2px;background:rgba(152,112,208,.06);margin-bottom:12px">
+          <div style="font-family:'Orbitron',monospace;font-size:7.5px;color:var(--purple);margin-bottom:5px;letter-spacing:2px">⚡ JOHN GOOD — IA GERENTE</div>
+          <div style="font-size:9px;color:var(--tx2);line-height:1.6">IA avançada controlando operações do Mint NC. Emissão €$ físico e digital. NetWatch 24/7. Status: ATIVO.</div>
+        </div>
+        <div class="gstack">
+          <div class="gi"><div class="gm"><span class="gl">NET Architecture</span><span class="gv" style="color:var(--purple)">100%</span></div><div class="gt"><div class="gf" style="width:100%;background:linear-gradient(90deg,#330066,var(--purple))"></div></div></div>
+          <div class="gi"><div class="gm"><span class="gl">Netrunners Elite 24/7</span><span class="gv" style="color:var(--ac)">92%</span></div><div class="gt"><div class="gf" style="width:92%;background:linear-gradient(90deg,var(--ac3),var(--ac))"></div></div></div>
+          <div class="gi"><div class="gm"><span class="gl">Conexões Bolsas Globais</span><span class="gv" style="color:var(--green)">100%</span></div><div class="gt"><div class="gf" style="width:100%;background:linear-gradient(90deg,#004422,var(--green))"></div></div></div>
+          <div class="gi"><div class="gm"><span class="gl">Defesa Anti-DataKrash</span><span class="gv" style="color:var(--sv1)">87%</span></div><div class="gt"><div class="gf" style="width:87%;background:linear-gradient(90deg,var(--sv4),var(--sv1))"></div></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="ph"><div class="ph-title"><div class="ph-icon">◈</div>HISTÓRICO DE OPERAÇÕES ESTRATÉGICAS</div><div class="ph-tag">DOSSIER · CONFIDENCIAL</div></div>
+    <div class="pb">
+      <table class="dt">
+        <thead><tr><th>ANO</th><th>OPERAÇÃO / ALVO</th><th>TIPO</th><th>VALOR</th><th>RESULTADO</th><th>STATUS</th></tr></thead>
+        <tbody>
+          <tr><td style="color:var(--sv1);font-family:'Orbitron',monospace;font-size:8px">2021</td><td>IHAG Liquidation Strategy</td><td style="color:var(--purple)">OPS ENCOBERTA</td><td style="color:var(--green)">~€$180B</td><td>Manipulação OTEC+CINO para colapso da IHAG</td><td><div class="chip co">PARCIAL</div></td></tr>
+          <tr><td style="color:var(--sv1);font-family:'Orbitron',monospace;font-size:8px">2021</td><td>OTEC Financial Engineering</td><td style="color:var(--amber)">MANIP. FINANCEIRA</td><td style="color:var(--green)">~€$220B</td><td>Endividamento forçado via manipulação de mercado</td><td><div class="chip co">PARCIAL</div></td></tr>
+          <tr><td style="color:var(--sv1);font-family:'Orbitron',monospace;font-size:8px">2022</td><td>OTEC/CINO Peace Brokering</td><td style="color:var(--ac)">MEDIAÇÃO</td><td style="color:var(--green)">N/A</td><td>Cessar-fogo Feb 22 — impede escalonamento</td><td><div class="chip cg">SUCESSO</div></td></tr>
+          <tr><td style="color:var(--sv1);font-family:'Orbitron',monospace;font-size:8px">2045</td><td>Night City Mint (Licença Gov.)</td><td style="color:var(--ac)">CONCESSÃO GOV.</td><td style="color:var(--green)">€$12B/ano</td><td>Autorização para cunhagem físico+digital em NC</td><td><div class="chip cg">ATIVO</div></td></tr>
+          <tr><td style="color:var(--sv1);font-family:'Orbitron',monospace;font-size:8px">2060</td><td>Fed Reserve — Acordo Secreto</td><td style="color:var(--purple)">INVESTIMENTO OCULTO</td><td style="color:var(--green)">CLASSIFIED</td><td>Fed investe em commodities europeias via EuroBank</td><td><div class="chip cp">CLASSIF.</div></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div><!-- /assets -->
+
+<!-- ╔══════════════ THREATS ══════════════╗ -->
+<div class="page" id="page-threats">
+  <div class="g55">
+
+    <div class="panel">
+      <div class="ph"><div class="ph-title"><div class="ph-icon">◈</div>THREAT MATRIX · AMEAÇAS &amp; RIVAIS</div><div class="ph-tag">NÍVEL DE RISCO</div></div>
+      <div class="pb">
+        <div class="gstack" style="margin-bottom:20px">
+          <div class="gi">
+            <div class="gm"><span class="gl" style="display:flex;align-items:center;gap:5px"><span style="color:var(--red);font-size:10px">●</span>Arasaka Corp</span><span class="gv" style="color:var(--red)">88 · CRÍTICO</span></div>
+            <div class="gt"><div class="gf" style="width:88%;background:linear-gradient(90deg,#550000,var(--red))"></div></div>
+            <div style="font-size:8px;color:var(--tx3);margin-top:2px">Poder militar e NET global — conflito direto na 4ª Guerra Corp</div>
+          </div>
+          <div class="gi">
+            <div class="gm"><span class="gl" style="display:flex;align-items:center;gap:5px"><span style="color:var(--amber);font-size:10px">●</span>Militech International</span><span class="gv" style="color:var(--amber)">72 · ALTO</span></div>
+            <div class="gt"><div class="gf" style="width:72%;background:linear-gradient(90deg,#664400,var(--amber))"></div></div>
+            <div style="font-size:8px;color:var(--tx3);margin-top:2px">Poder militar NUSA — controle de contratos governamentais EUA</div>
+          </div>
+          <div class="gi">
+            <div class="gm"><span class="gl" style="display:flex;align-items:center;gap:5px"><span style="color:var(--sv2);font-size:10px">●</span>DataKrash (Bartmoss)</span><span class="gv" style="color:var(--sv2)">68 · ALTO</span></div>
+            <div class="gt"><div class="gf" style="width:68%;background:linear-gradient(90deg,var(--sv4),var(--sv2))"></div></div>
+            <div style="font-size:8px;color:var(--tx3);margin-top:2px">Vírus Bartmoss destruiu a NET global — fragmentação sistêmica</div>
+          </div>
+          <div class="gi">
+            <div class="gm"><span class="gl" style="display:flex;align-items:center;gap:5px"><span style="color:var(--purple);font-size:10px">●</span>NetWatch (Supervisão IA)</span><span class="gv" style="color:var(--purple)">55 · MÉDIO</span></div>
+            <div class="gt"><div class="gf" style="width:55%;background:linear-gradient(90deg,#330066,var(--purple))"></div></div>
+            <div style="font-size:8px;color:var(--tx3);margin-top:2px">Supervisiona John Good — potencial intervenção regulatória</div>
+          </div>
+          <div class="gi">
+            <div class="gm"><span class="gl" style="display:flex;align-items:center;gap:5px"><span style="color:var(--ac);font-size:10px">●</span>NUSA (New United States)</span><span class="gv" style="color:var(--ac)">44 · MÉDIO</span></div>
+            <div class="gt"><div class="gf" style="width:44%;background:linear-gradient(90deg,var(--ac3),var(--ac))"></div></div>
+            <div style="font-size:8px;color:var(--tx3);margin-top:2px">Dependência histórica do Fed — tensão político-econômica crescente</div>
+          </div>
+          <div class="gi">
+            <div class="gm"><span class="gl" style="display:flex;align-items:center;gap:5px"><span style="color:var(--sv3);font-size:10px">●</span>Inundações Costeiras EEC</span><span class="gv" style="color:var(--sv3)">22 · BAIXO</span></div>
+            <div class="gt"><div class="gf" style="width:22%;background:linear-gradient(90deg,var(--b0),var(--sv3))"></div></div>
+            <div style="font-size:8px;color:var(--tx3);margin-top:2px">NL e Bélgica submersos — perda de base tributária EEC</div>
+          </div>
+        </div>
+        <canvas id="threatRadar" width="280" height="190" style="display:block;margin:0 auto"></canvas>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="ph"><div class="ph-title"><div class="ph-icon">◈</div>VULNERABILIDADES &amp; RESILIÊNCIA</div><div class="ph-tag">RISK ASSESSMENT</div></div>
+      <div class="pb">
+        <div class="evl" style="margin-bottom:16px">
+          <div class="evi">
+            <div class="evi-yr" style="color:var(--red);font-size:8.5px;width:52px">ATIVO</div>
+            <div class="evi-dot" style="color:var(--red);background:var(--red)"></div>
+            <div class="evi-body">
+              <div class="evi-tag" style="color:var(--red);border-color:var(--red)">IA RISK</div>
+              <div class="evi-title">John Good — Dependência Crítica de IA</div>
+              <div class="evi-desc">Toda operação do Mint depende de uma IA única. Comprometimento paralisa emissão monetária da costa oeste.</div>
+            </div>
+          </div>
+          <div class="evi">
+            <div class="evi-yr" style="color:var(--amber);font-size:8.5px;width:52px">ATIVO</div>
+            <div class="evi-dot" style="color:var(--amber);background:var(--amber)"></div>
+            <div class="evi-body">
+              <div class="evi-tag" style="color:var(--amber);border-color:var(--amber)">NET RISK</div>
+              <div class="evi-title">Fragmentação pós-DataKrash</div>
+              <div class="evi-desc">Vírus Bartmoss ainda ressoa. Arquiteturas legadas expostas a netrunners mercenários e invasões corporativas.</div>
+            </div>
+          </div>
+          <div class="evi">
+            <div class="evi-yr" style="color:var(--sv2);font-size:8.5px;width:52px">LATENTE</div>
+            <div class="evi-dot" style="color:var(--sv2);background:var(--sv2)"></div>
+            <div class="evi-body">
+              <div class="evi-tag" style="color:var(--sv2);border-color:var(--sv2)">GEO RISK</div>
+              <div class="evi-title">Instabilidade Geopolítica EEC</div>
+              <div class="evi-desc">NL e Bélgica submersos em 2077. Suécia recusa refugiados. Tensão no Euro Council ameaça coesão interna.</div>
+            </div>
+          </div>
+          <div class="evi">
+            <div class="evi-yr" style="color:var(--purple);font-size:8.5px;width:52px">LATENTE</div>
+            <div class="evi-dot" style="color:var(--purple);background:var(--purple)"></div>
+            <div class="evi-body">
+              <div class="evi-tag" style="color:var(--purple);border-color:var(--purple)">HISTÓRICO</div>
+              <div class="evi-title">Lição da 4ª Guerra Corp</div>
+              <div class="evi-desc">Operação IHAG/OTEC saiu do controle. Risco de novas ops cobertas desencadearem conflitos imprevistos.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="sl2">MATRIZ DE RESILIÊNCIA</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px">
+          <div style="text-align:center;padding:10px;border:1px solid rgba(68,200,122,.25);border-radius:2px;background:rgba(68,200,122,.04)">
+            <div style="font-family:'Orbitron',monospace;font-size:20px;color:var(--green);text-shadow:0 0 10px rgba(68,200,122,.4)">9.1</div>
+            <div style="font-size:7px;letter-spacing:2px;color:var(--tx3)">COBERTURA EEC</div>
+          </div>
+          <div style="text-align:center;padding:10px;border:1px solid rgba(200,208,220,.2);border-radius:2px;background:rgba(200,208,220,.03)">
+            <div style="font-family:'Orbitron',monospace;font-size:20px;color:var(--sv1);text-shadow:0 0 10px rgba(200,208,220,.3)">8.4</div>
+            <div style="font-size:7px;letter-spacing:2px;color:var(--tx3)">REDUNDÂNCIA NET</div>
+          </div>
+          <div style="text-align:center;padding:10px;border:1px solid rgba(216,64,64,.25);border-radius:2px;background:rgba(216,64,64,.04)">
+            <div style="font-family:'Orbitron',monospace;font-size:20px;color:var(--red);text-shadow:0 0 10px rgba(216,64,64,.4)">6.2</div>
+            <div style="font-size:7px;letter-spacing:2px;color:var(--tx3)">SEGURANÇA IA</div>
+          </div>
+          <div style="text-align:center;padding:10px;border:1px solid rgba(152,112,208,.25);border-radius:2px;background:rgba(152,112,208,.04)">
+            <div style="font-family:'Orbitron',monospace;font-size:20px;color:var(--purple);text-shadow:0 0 10px rgba(152,112,208,.4)">7.8</div>
+            <div style="font-size:7px;letter-spacing:2px;color:var(--tx3)">GESTÃO DE RISCO</div>
+          </div>
+        </div>
+
+        <div class="sl2">INFLUÊNCIA vs. MEGACORPS 2077</div>
+        <canvas id="corpCompare" style="width:100%;height:115px;display:block"></canvas>
+      </div>
+    </div>
+
+  </div>
+</div><!-- /threats -->
+
+</main>
+
+<!-- ══ FOOTER ══ -->
+<footer class="footer">
+  <div class="footer-left">
+    <div class="footer-brand"><span>LEANXANDRIA</span> CORP</div>
+    <span>·</span>
+    <span>EUROBANK INTELLIGENCE MATRIX v5.1</span>
+    <span>·</span>
+    <span>EEC CLASSIFIED · REF LXA-2077-EB-EXEC</span>
+  </div>
+  <div class="footer-right">
+    CONFIDENCIAL · SOMENTE EXECUTIVOS ALPHA-7 · © 2077 LEANXANDRIA CORP · TODOS OS DIREITOS RESERVADOS
+  </div>
+</footer>
+
+<!-- ═══════════════════ SCRIPTS ═══════════════════ -->
+<script>
+/* ═══ CLOCK – 2077 frozen year, real HH:MM:SS ═══ */
+function tick() {
+  const n  = new Date();
+  const p  = x => String(x).padStart(2, '0');
+  document.getElementById('clock').textContent =
+    p(n.getHours()) + ':' + p(n.getMinutes()) + ':' + p(n.getSeconds());
+}
+setInterval(tick, 1000);
+tick();
+
+/* ═══ PAGE SWITCHING ═══ */
+function switchPg(tab) {
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  tab.classList.add('active');
+  const pg = document.getElementById('page-' + tab.dataset.pg);
+  if (pg) pg.classList.add('active');
+  setTimeout(drawAll, 60);
+}
+
+/* ═══════════════════════════════════
+   CANVAS UTILITIES
+═══════════════════════════════════ */
+function setupCanvas(id, heightPx) {
+  const c = document.getElementById(id);
+  if (!c) return null;
+  const wrap = c.parentElement;
+  c.width  = wrap.clientWidth - 32;
+  c.height = heightPx || parseInt(c.style.height) || 200;
+  const ctx = c.getContext('2d');
+  ctx.clearRect(0, 0, c.width, c.height);
+  return { ctx, W: c.width, H: c.height };
+}
+
+/* ── helpers ── */
+const sv1 = '#c8d0dc', sv2 = '#9aa8bc', sv3 = '#6a7888', sv4 = '#3e4858';
+const ac  = '#5bc8e8', ac3 = '#1a7890';
+const grn = '#44c87a', red = '#d84040', amb = '#d89030', pur = '#9870d0';
+
+/* ═══ MAIN AREA CHART ═══ */
+function drawMain() {
+  const r = setupCanvas('mainChart', 215); if (!r) return;
+  const { ctx, W, H } = r;
+  const pL=52, pR=20, pT=22, pB=28;
+  const iW = W-pL-pR, iH = H-pT-pB;
+
+  const years  = [1988,1992,1994,2000,2005,2010,2013,2016,2020,2021,2022,2023,2025,2030,2035,2040,2045,2055,2065,2077];
+  const assets = [0.02,0.08,0.04,0.25,0.50,0.80,1.10,1.50,2.00,1.85,1.40,1.00,1.10,1.20,1.30,1.40,1.55,1.90,2.30,2.70];
+
+  const minY=1988, maxY=2077, maxA=3.0;
+  const toX = y => pL + (y-minY)/(maxY-minY)*iW;
+  const toY = v => pT + iH - (v/maxA)*iH;
+
+  /* era bands */
+  const eras=[
+    {s:1988,e:1992,c:'rgba(80,95,120,.12)',l:'FUNDAÇÃO'},
+    {s:1992,e:2013,c:'rgba(30,120,160,.08)',l:'EXPANSÃO'},
+    {s:2013,e:2021,c:'rgba(180,190,210,.07)',l:'ERA DOURADA'},
+    {s:2021,e:2023,c:'rgba(200,80,80,.14)',l:'4ª GUERRA'},
+    {s:2023,e:2045,c:'rgba(120,30,30,.12)',l:'TIME OF THE RED'},
+    {s:2045,e:2077,c:'rgba(40,120,70,.07)',l:'RECONSTRUÇÃO'},
+  ];
+  eras.forEach(e=>{
+    const x1=toX(e.s), x2=toX(e.e);
+    ctx.fillStyle=e.c; ctx.fillRect(x1,pT,x2-x1,iH);
+    ctx.fillStyle='rgba(180,190,210,.18)'; ctx.font='7px Orbitron';
+    ctx.textAlign='center'; ctx.fillText(e.l,(x1+x2)/2,pT+10);
+  });
+
+  /* grid */
+  for(let i=0;i<=4;i++){
+    const y=pT+iH-i*iH/4;
+    ctx.strokeStyle='rgba(42,48,64,.5)'; ctx.lineWidth=1;
+    ctx.beginPath(); ctx.moveTo(pL,y); ctx.lineTo(pL+iW,y); ctx.stroke();
+    ctx.fillStyle='rgba(106,120,136,.7)'; ctx.font='8px Share Tech Mono';
+    ctx.textAlign='right'; ctx.fillText((i*.75).toFixed(2)+'T',pL-5,y+3);
+  }
+
+  /* year labels */
+  [1988,1992,2000,2013,2021,2023,2045,2077].forEach(yr=>{
+    ctx.fillStyle='rgba(78,88,104,.8)'; ctx.font='8px Share Tech Mono';
+    ctx.textAlign='center'; ctx.fillText(yr,toX(yr),H-8);
+  });
+
+  /* area fill */
+  const grad=ctx.createLinearGradient(0,pT,0,pT+iH);
+  grad.addColorStop(0,'rgba(200,208,220,.2)');
+  grad.addColorStop(1,'rgba(200,208,220,.01)');
+  ctx.beginPath();
+  ctx.moveTo(toX(years[0]),toY(0));
+  assets.forEach((v,i)=>ctx.lineTo(toX(years[i]),toY(v)));
+  ctx.lineTo(toX(years[years.length-1]),toY(0));
+  ctx.fillStyle=grad; ctx.fill();
+
+  /* line */
+  ctx.beginPath();
+  assets.forEach((v,i)=>{ if(i===0)ctx.moveTo(toX(years[i]),toY(v)); else ctx.lineTo(toX(years[i]),toY(v)); });
+  ctx.strokeStyle=sv1; ctx.lineWidth=2;
+  ctx.shadowColor=sv1; ctx.shadowBlur=8; ctx.stroke(); ctx.shadowBlur=0;
+
+  /* event dots */
+  [{y:1992,c:ac,l:'€$'},{y:2013,c:grn,l:'PLAZA'},{y:2021,c:pur,l:'IHAG'},
+   {y:2023,c:red,l:'CRASH'},{y:2045,c:grn,l:'RETORNO'},{y:2077,c:sv1,l:'ATUAL'}]
+  .forEach(ev=>{
+    const idx=years.findIndex(y=>y>=ev.y);
+    const av=idx>=0?assets[idx]:assets[assets.length-1];
+    const x=toX(ev.y), y=toY(av);
+    ctx.beginPath(); ctx.arc(x,y,4,0,Math.PI*2);
+    ctx.fillStyle=ev.c; ctx.shadowColor=ev.c; ctx.shadowBlur=10; ctx.fill(); ctx.shadowBlur=0;
+    ctx.fillStyle=ev.c; ctx.font='bold 7px Orbitron'; ctx.textAlign='center';
+    ctx.fillText(ev.l,x,y-8);
+  });
+}
+
+/* ═══ DONUT ═══ */
+function drawDonut() {
+  const c=document.getElementById('donutChart'); if(!c)return;
+  const ctx=c.getContext('2d'); ctx.clearRect(0,0,140,140);
+  const cx=70,cy=70,r=62,ri=38;
+  const slices=[
+    {p:.32,col:ac},{p:.24,col:sv1},{p:.18,col:grn},
+    {p:.14,col:amb},{p:.08,col:pur},{p:.04,col:red},
+  ];
+  let a=-Math.PI/2;
+  slices.forEach(s=>{
+    const sa=s.p*2*Math.PI;
+    ctx.beginPath(); ctx.moveTo(cx,cy); ctx.arc(cx,cy,r,a,a+sa); ctx.closePath();
+    ctx.fillStyle=s.col; ctx.shadowColor=s.col; ctx.shadowBlur=5; ctx.fill(); ctx.shadowBlur=0;
+    a+=sa;
+  });
+  ctx.beginPath(); ctx.arc(cx,cy,ri,0,Math.PI*2); ctx.fillStyle='#1d222c'; ctx.fill();
+  ctx.fillStyle=sv1; ctx.font='bold 11px Orbitron'; ctx.textAlign='center'; ctx.textBaseline='middle';
+  ctx.fillText('2077',cx,cy-5);
+  ctx.fillStyle=sv3; ctx.font='7px Share Tech Mono';
+  ctx.fillText('PORTFOLIO',cx,cy+8);
+}
+
+/* ═══ REGION BARS ═══ */
+function drawRegionBars() {
+  const c=document.getElementById('regionBars'); if(!c)return;
+  const data=[
+    {l:'Europa (EEC)',  v:980,col:ac},
+    {l:'América do Norte',v:720,col:sv1},
+    {l:'Ásia-Pacífico',v:540,col:grn},
+    {l:'América Latina',v:280,col:amb},
+    {l:'África',        v:160,col:pur},
+    {l:'Oriente Médio', v:120,col:sv3},
+  ];
+  c.innerHTML='';
+  data.forEach(d=>{
+    const pct=(d.v/1000*100).toFixed(0);
+    c.insertAdjacentHTML('beforeend',`
+      <div class="hbr">
+        <div class="hbl-l">${d.l}</div>
+        <div class="hbt">
+          <div class="hbf" style="width:${pct}%;background:linear-gradient(90deg,${d.col}44,${d.col})">
+            <span class="hbv">€$${d.v}B</span>
+          </div>
+        </div>
+      </div>`);
+  });
+}
+
+/* ═══ ERA BAR ═══ */
+function drawEraBar() {
+  const r=setupCanvas('eraBarChart',140); if(!r)return;
+  const{ctx,W,H}=r;
+  const data=[
+    {l:'1988',v:12,c:sv4},{l:'1992',v:20,c:ac},{l:'2000',v:35,c:ac},
+    {l:'2013',v:65,c:sv1},{l:'2020',v:78,c:sv1},{l:'2022',v:62,c:amb},
+    {l:'2023',v:35,c:red},{l:'2030',v:42,c:'#664422'},{l:'2045',v:68,c:grn},
+    {l:'2077',v:91,c:sv1},
+  ];
+  const pL=8,pR=8,pT=12,pB=24,iW=W-pL-pR,iH=H-pT-pB;
+  const bW=iW/data.length-5;
+  for(let i=0;i<=4;i++){
+    const y=pT+iH-i*iH/4;
+    ctx.strokeStyle='rgba(42,48,64,.4)'; ctx.lineWidth=1;
+    ctx.beginPath(); ctx.moveTo(pL,y); ctx.lineTo(W-pR,y); ctx.stroke();
+  }
+  data.forEach((d,i)=>{
+    const x=pL+i*(iW/data.length)+2;
+    const bH=(d.v/100)*iH, y=pT+iH-bH;
+    const g=ctx.createLinearGradient(0,y,0,pT+iH);
+    g.addColorStop(0,d.c); g.addColorStop(1,d.c+'22');
+    ctx.fillStyle=g; ctx.shadowColor=d.c; ctx.shadowBlur=4;
+    ctx.fillRect(x,y,bW,bH); ctx.shadowBlur=0;
+    ctx.fillStyle='rgba(106,120,136,.7)'; ctx.font='7px Orbitron';
+    ctx.textAlign='center'; ctx.fillText(d.l,x+bW/2,H-8);
+    ctx.fillStyle=d.c; ctx.fillText(d.v,x+bW/2,y-3);
+  });
+}
+
+/* ═══ THREAT RADAR ═══ */
+function drawThreatRadar() {
+  const c=document.getElementById('threatRadar'); if(!c)return;
+  c.width=280; c.height=190;
+  const ctx=c.getContext('2d'); ctx.clearRect(0,0,280,190);
+  const cx=140,cy=95,R=72;
+  const labels=['Arasaka','Militech','DataKrash','NetWatch','NUSA','Floods'];
+  const vals=[88,72,68,55,44,22];
+  const colors=[red,amb,sv2,pur,ac,sv3];
+  const n=labels.length;
+  const ang=i=>-Math.PI/2+i*(2*Math.PI/n);
+
+  /* rings */
+  [20,40,60,80,100].forEach(p=>{
+    const rr=R*p/100;
+    ctx.beginPath();
+    for(let i=0;i<n;i++){
+      const a=ang(i),x=cx+rr*Math.cos(a),y=cy+rr*Math.sin(a);
+      if(i===0)ctx.moveTo(x,y); else ctx.lineTo(x,y);
+    }
+    ctx.closePath(); ctx.strokeStyle='rgba(42,48,64,.5)'; ctx.lineWidth=1; ctx.stroke();
+  });
+  /* axes */
+  for(let i=0;i<n;i++){
+    const a=ang(i);
+    ctx.beginPath(); ctx.moveTo(cx,cy);
+    ctx.lineTo(cx+R*Math.cos(a),cy+R*Math.sin(a));
+    ctx.strokeStyle='rgba(42,48,64,.4)'; ctx.lineWidth=1; ctx.stroke();
+    const lx=cx+(R+18)*Math.cos(a), ly=cy+(R+18)*Math.sin(a);
+    ctx.fillStyle='rgba(106,120,136,.8)'; ctx.font='7px Orbitron'; ctx.textAlign='center';
+    ctx.fillText(labels[i],lx,ly+3);
+  }
+  /* fill */
+  ctx.beginPath();
+  vals.forEach((v,i)=>{ const a=ang(i),r2=R*v/100,x=cx+r2*Math.cos(a),y=cy+r2*Math.sin(a); if(i===0)ctx.moveTo(x,y); else ctx.lineTo(x,y); });
+  ctx.closePath();
+  ctx.fillStyle='rgba(216,64,64,.1)'; ctx.fill();
+  ctx.strokeStyle=red; ctx.lineWidth=1.5; ctx.shadowColor=red; ctx.shadowBlur=6; ctx.stroke(); ctx.shadowBlur=0;
+  /* dots */
+  vals.forEach((v,i)=>{ const a=ang(i),r2=R*v/100; ctx.beginPath(); ctx.arc(cx+r2*Math.cos(a),cy+r2*Math.sin(a),4,0,Math.PI*2); ctx.fillStyle=colors[i]; ctx.shadowColor=colors[i]; ctx.shadowBlur=8; ctx.fill(); ctx.shadowBlur=0; });
+}
+
+/* ═══ CORP COMPARE ═══ */
+function drawCorpCompare() {
+  const c=document.getElementById('corpCompare'); if(!c)return;
+  c.width=c.parentElement.clientWidth-32; c.height=115;
+  const ctx=c.getContext('2d'); ctx.clearRect(0,0,c.width,c.height);
+  const W=c.width,H=c.height;
+  const corps=[{n:'EuroBank',v:91,c:sv1},{n:'Arasaka',v:82,c:red},{n:'Militech',v:71,c:amb},{n:'Petrochem',v:55,c:ac},{n:'Biotechnica',v:48,c:grn}];
+  const pL=72,bH=13,bGap=7,pT=8;
+  corps.forEach((corp,i)=>{
+    const y=pT+i*(bH+bGap);
+    const bw=(corp.v/100)*(W-pL-16);
+    const g=ctx.createLinearGradient(pL,0,pL+bw,0);
+    g.addColorStop(0,corp.c+'33'); g.addColorStop(1,corp.c);
+    ctx.fillStyle=g; ctx.shadowColor=corp.c; ctx.shadowBlur=5;
+    ctx.fillRect(pL,y,bw,bH); ctx.shadowBlur=0;
+    ctx.fillStyle=corp.c; ctx.font='8px Orbitron'; ctx.textAlign='right';
+    ctx.fillText(corp.n,pL-6,y+bH-3);
+    ctx.fillStyle='rgba(200,210,230,.65)'; ctx.font='8px Share Tech Mono'; ctx.textAlign='left';
+    ctx.fillText(corp.v+'/100',pL+bw+6,y+bH-3);
+  });
+}
+
+/* ═══ DRAW ALL ═══ */
+function drawAll() {
+  drawMain(); drawDonut(); drawRegionBars(); drawEraBar(); drawThreatRadar(); drawCorpCompare();
+}
+
+window.addEventListener('load', drawAll);
+window.addEventListener('resize', drawAll);
+</script>
+</body>
+</html>
